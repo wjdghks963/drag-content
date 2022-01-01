@@ -46,3 +46,11 @@ Droppable내에서 움직일 수 있는 Item이다.
   )}
 </Draggable>
 ```
+
+## react memo
+
+react memo는 react한테 props가 변하지 않는다면 해당 component를 렌더링하지 말라고 하는 역할
+
+```
+export default React.memo(DragabbleCard);
+```

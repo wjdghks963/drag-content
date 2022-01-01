@@ -7,6 +7,7 @@ import {
 import { useRecoilState } from "recoil";
 import { toDostate } from "./atoms";
 import styled from "styled-components";
+import DragabbleCard from "./Component/DragabbleCard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -32,23 +33,18 @@ const Board = styled.div`
   min-height: 200px;
 `;
 
-const Card = styled.div`
-  border-radius: 5px;
-  padding: 5px 10px;
-  margin-bottom: 5px;
-  background-color: ${(props) => props.theme.cardColor};
-`;
-
 function App() {
   const [toDos, setToDos] = useRecoilState(toDostate);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    if (!destination) return;
+
     setToDos((oldToDos) => {
-      const copyToDos = [...oldToDos];
-      // 선택한 index를 없애고
-      copyToDos.splice(source.index, 1);
-      // 선택한 index가 도착한 부분에 넣어준다.
-      copyToDos.splice(destination?.index, 0, draggableId);
-      return copyToDos;
+      const toDosCopy = [...oldToDos];
+      // 선택한 index부분에서 한개의 원소를 없애고
+      toDosCopy.splice(source.index, 1);
+      // 선택한 index가 도착한 부분에 아무것도 자르지 않고 넣어준다.
+      toDosCopy.splice(destination?.index, 0, draggableId);
+      return toDosCopy;
     });
   };
   return (
@@ -59,17 +55,7 @@ function App() {
             {(magic) => (
               <Board ref={magic.innerRef} {...magic.droppableProps}>
                 {toDos.map((toDo, index) => (
-                  <Draggable key={toDo} draggableId={toDo} index={index}>
-                    {(magic) => (
-                      <Card
-                        ref={magic.innerRef}
-                        {...magic.draggableProps}
-                        {...magic.dragHandleProps}
-                      >
-                        {toDo}
-                      </Card>
-                    )}
-                  </Draggable>
+                  <DragabbleCard key={toDo} toDo={toDo} index={index} />
                 ))}
                 {magic.placeholder}
               </Board>
