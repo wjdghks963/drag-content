@@ -47,10 +47,57 @@ Droppable내에서 움직일 수 있는 Item이다.
 </Draggable>
 ```
 
+```javascript
+{
+  (magic, snapshot) => (
+    <Area
+      isDraggingOver={snapshot.isDraggingOver}
+      isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
+      ref={magic.innerRef}
+      {...magic.droppableProps}
+    >
+      {toDos.map((toDo, index) => (
+        <DragabbleCard key={toDo} toDo={toDo} index={index} />
+      ))}
+      {magic.placeholder}
+    </Area>
+  );
+}
+```
+
+4. isDraggingOver:boolean > 현재 선택한 item이 특정 board에 드래깅 되고 있는지 확인
+
+5. draggingFromThisWith: board에서 벗어나 드래깅되고 있는 item
+
+#### draggble ref
+
+reference는 react component를 통해 HTML요소를 가져올 수 있도록한다.
+
+---
+
 ## react memo
+
+[velog react memo](https://velog.io/@wjdghks963/React.memo)
 
 react memo는 react한테 props가 변하지 않는다면 해당 component를 렌더링하지 말라고 하는 역할
 
 ```
 export default React.memo(DragabbleCard);
+```
+
+---
+
+# JS 문법
+
+Object.keys(obj)는 obj의 key값들을 *배열*로 반환한다.
+따라서 아래의 코드는 toDos의 키값에 map을 사용한 뒤 Board component를 렌더링한다.
+
+Key는 React가 어떤 항목을 변경, 추가 또는 삭제할지 식별하는 것을 돕습니다. key는 엘리먼트에 안정적인 고유성을 부여하기 위해 배열 내부의 엘리먼트에 지정해야 합니다.
+
+```javascript
+{
+  Object.keys(toDos).map((boardId) => (
+    <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+  ));
+}
 ```
