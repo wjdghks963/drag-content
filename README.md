@@ -101,3 +101,10 @@ Key는 React가 어떤 항목을 변경, 추가 또는 삭제할지 식별하는
   ));
 }
 ```
+
+# Chanllenge
+
+- [x] localStorage에 저장 -- 입력을 해야 저장됨 드래그 후, board를 옮긴 후 상태 저장 x
+- [x] input 이쁘게
+- [ ] drag로 task 삭제
+- [ ] board를 추가하는 form 만들기

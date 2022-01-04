@@ -42,6 +42,19 @@ const Area = styled.div<IAreaProps>`
 
 const Form = styled.form`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
+  input {
+    font-size: 16px;
+    border: 0;
+    background-color: white;
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+  }
 `;
 
 interface IBoardProps {
@@ -55,16 +68,22 @@ interface IForm {
 function Board({ toDos, boardId }: IBoardProps) {
   const setToDos = useSetRecoilState(toDostate);
   const { register, setValue, handleSubmit } = useForm<IForm>();
-  const onValid = (toDo: any) => {
+  const onValid = ({ toDo }: IForm) => {
     const newToDo = {
       id: Date.now(),
       text: toDo,
     };
     setToDos((allBoards) => {
-      return { ...allBoards, [boardId]: [newToDo, ...allBoards[boardId]] };
+      const save = {
+        ...allBoards,
+        [boardId]: [newToDo, ...allBoards[boardId]],
+      };
+      localStorage.setItem("toDo", JSON.stringify(save));
+      return save;
     });
     setValue("toDo", "");
   };
+
   return (
     <Wrapper>
       <Title>{boardId}</Title>
@@ -72,7 +91,7 @@ function Board({ toDos, boardId }: IBoardProps) {
         <input
           {...register("toDo", { required: true })}
           type="text"
-          placeholder={`${boardId}에 할일을 적어주세요`}
+          placeholder={`${boardId}`}
         ></input>
       </Form>
       <Droppable droppableId={boardId}>

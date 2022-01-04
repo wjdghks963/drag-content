@@ -24,7 +24,7 @@ const Borads = styled.div`
 function App() {
   const [toDos, setToDos] = useRecoilState(toDostate);
   const onDragEnd = (info: DropResult) => {
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // 같은 보드에서 움직인다.
